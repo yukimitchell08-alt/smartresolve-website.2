@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartResolve Service Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <div class="brand">SmartResolve <span>· NovaTech</span></div>
+    <ul>
+      <li><a href="#tickets">Ticket log</a></li>
+      <li><a href="#request">Raise a ticket</a></li>
+      <li><a href="#sop">SOP</a></li>
+      <li><a href="#emails">Emails</a></li>
+      <li><a href="#change">Change request</a></li>
+      <li><a href="#innovation">Innovation</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="eyebrow">IT Support Blueprint · Module XHIS5122/p · Group 1</p>
+    <h1>SmartResolve Service Desk</h1>
+    <p class="sub">A ticket logging system, escalation procedure, communication templates and change process for NovaTech Solutions (Pty) Ltd.</p>
+    <dl class="meta">
+      <div><dt>Student</dt><dd>Thato Ndlovu</dd></div>
+      <div><dt>Student no.</dt><dd>ST10530324</dd></div>
+      <div><dt>Campus</dt><dd>MSA Campus Pretoria</dd></div>
+      <div><dt>Module</dt><dd>IT Systems Management</dd></div>
+      <div><dt>Date</dt><dd>September 2026</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="block" id="tickets">
+  <div class="sec-head">
+    <span class="tag">A · Ticket logging system</span>
+    <h2>Every request gets an ID, a priority and an owner</h2>
+    <p class="lead">Built in Excel with Data Validation and Conditional Formatting, in corporate blue (#0A3D62). Microsoft Forms with branching logic is the alternative. The table below is the working log from the figure in the report.</p>
+  </div>
+
+  <div class="stats" id="stats" aria-live="polite"></div>
+
+  <div class="filters">
+    <div class="fgroup" id="fPriority" role="group" aria-label="Filter by priority"><span>Priority</span></div>
+    <div class="fgroup" id="fStatus" role="group" aria-label="Filter by status"><span>Status</span></div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>Incident ID</th><th>Request category</th><th>Priority</th><th>Short description</th><th>Assigned technician</th><th>Resolution time</th><th>Status</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No tickets match these filters.</div>
+  </div>
+  <p class="legend"><i></i> High priority rows are shaded red and set in bold.</p>
+
+  <div class="cols">
+    <div class="panel">
+      <h3>Fields captured</h3>
+      <ul class="fieldlist">
+        <li><code>Incident ID</code> auto-generated, e.g. NT-2026-001</li>
+        <li><code>Request Category</code> drop-down menu</li>
+        <li><code>Priority Level</code> Low / Medium / High</li>
+        <li><code>Short Description</code></li>
+        <li><code>Assigned Technician</code></li>
+        <li><code>Resolution Time</code></li>
+        <li><code>Current Status</code> Open / In Progress / Resolved</li>
+      </ul>
+    </div>
+    <div class="panel branch">
+      <h3>Branching logic</h3>
+      <p>When the category is Internet/Wi-Fi and the issue affects 5 or more users, the ticket escalates to Level 2 within 24 hours. The form then asks one extra question: "Single or multiple users?"</p>
+      <p class="rule">IF category = Internet/Wi-Fi AND users ≥ 5<br>THEN escalate to Level 2 (24 h) + ask "Single or multiple users?"</p>
+    </div>
+  </div>
+  <p class="cite">Priority Level uses conditional formatting to highlight High priority tickets, as recommended by ITIL incident management (Axelos, 2019).</p>
+</section>
+
+<section class="block" id="request">
+  <div class="sec-head">
+    <span class="tag">Raise a ticket</span>
+    <h2>Report a problem to the help desk</h2>
+    <p class="lead">Fill in the form and SmartResolve logs the request, gives it an Incident ID and sets the priority using the rules in the SOP. The new ticket appears in the log above.</p>
+  </div>
+  <div class="req">
+    <form id="tform" class="panel" novalidate aria-label="Ticket request form">
+      <div class="row2">
+        <div class="field" id="f-name"><label for="name">Full name</label><input id="name" name="name" type="text" autocomplete="name" maxlength="60"><span class="err" id="e-name" role="alert"></span></div>
+        <div class="field" id="f-email"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="80"><span class="err" id="e-email" role="alert"></span></div>
+      </div>
+      <div class="field" id="f-cat">
+        <label for="cat">Request category</label>
+        <select id="cat" name="cat">
+          <option value="">Choose a category</option>
+          <option value="Network Connectivity">Network Connectivity (Internet/Wi-Fi)</option>
+          <option value="Software">Software (passwords, logins, applications)</option>
+          <option value="Hardware">Hardware (mouse, keyboard, screen, printer)</option>
+          <option value="Server Outage">Server Outage</option>
+        </select>
+        <span class="err" id="e-cat" role="alert"></span>
+      </div>
+      <div class="field" id="usersWrap" hidden>
+        <label for="users">Single or multiple users?</label>
+        <select id="users" name="users">
+          <option value="1">Only me</option>
+          <option value="2-4">2 to 4 people</option>
+          <option value="5+">5 or more people</option>
+        </select>
+        <p class="hint">Network problems that affect 5 or more people escalate to Level 2.</p>
+      </div>
+      <div class="field" id="f-desc"><label for="desc">Short description <small>(one line)</small></label><input id="desc" name="desc" type="text" maxlength="100" placeholder="e.g. No Wi-Fi in the warehouse since 08:00"><span class="err" id="e-desc" role="alert"></span></div>
+      <div class="field"><label for="more">More detail <small>(optional)</small></label><textarea id="more" name="more" maxlength="500" placeholder="What happened, what you already tried, and your desk or room."></textarea></div>
+      <button class="btn" type="submit">Submit ticket</button>
+    </form>
+
+    <div class="side">
+      <div class="panel prio" aria-live="polite">
+        <h3>Priority for this request</h3>
+        <div id="prioOut"><span class="hint">Choose a category to see the priority and the response time.</span></div>
+      </div>
+      <div class="panel">
+        <h3>What happens next</h3>
+        <ol class="steps-mini">
+          <li>You get an Incident ID, for example NT-2026-006.</li>
+          <li>The Team Leader checks the details within 30 minutes.</li>
+          <li>Level 1 aims to fix it within 2 hours.</li>
+          <li>You get an update if it escalates, and a closing email when it is resolved.</li>
+        </ol>
+      </div>
+      <p class="note">This page is a demonstration. Tickets are saved in this browser only and are not sent to a real help desk.</p>
+    </div>
+  </div>
+  <div class="ack panel" id="ack" tabindex="-1" hidden style="margin-top:1.5rem"></div>
+</section>
+
+<section class="block" id="sop">
+  <div class="sec-head">
+    <span class="tag">B · Standard operating procedure</span>
+    <h2>Ticket handling, from logging to closure</h2>
+    <p class="lead">The Team Leader runs the process. Each step has a time limit, and three conditions trigger escalation.</p>
+  </div>
+  <div class="sop">
+    <ol class="steps">
+      <li>
+        <h3>Logging <span class="sla">0–15 min</span></h3>
+        <p>The Team Leader records the issue in the system and generates a unique Incident ID.</p>
+      </li>
+      <li>
+        <h3>Categorization <span class="sla">15–30 min</span></h3>
+        <p>The Team Leader validates all required fields to ensure accurate classification.</p>
+      </li>
+      <li>
+        <h3>Level 1 resolution <span class="sla">within 2 hours</span></h3>
+        <p>Initial triage uses the Knowledge Base. Password-related issues are fixed with Active Directory resets.</p>
+      </li>
+      <li>
+        <h3>Escalation decision</h3>
+        <p>Escalate when any of these is true:</p>
+        <ul class="triggers">
+          <li>The issue is unresolved after two follow-ups.</li>
+          <li>Network downtime exceeds 30 minutes.</li>
+          <li>More than five users are affected (e.g. VLAN 20).</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Level 2 resolution <span class="sla">within 24 hours</span></h3>
+        <p>The Team Leader investigates deeper network issues: SSH access to switches, VLAN configuration, DHCP and DNS (8.8.8.8).</p>
+      </li>
+      <li>
+        <h3>Level 3 resolution <span class="sla">within 48 hours or complex cases</span></h3>
+        <p>For advanced issues the Team Leader starts a Change Request Form and coordinates with administrators or vendors as needed.</p>
+      </li>
+      <li>
+        <h3>Closure</h3>
+        <p>Final testing is done, the resolution time is updated, the status is set to Resolved and a resolution email goes to the user.</p>
+      </li>
+    </ol>
+    <figure>
+      <svg viewBox="0 0 360 640" role="img" aria-label="Flowchart: log issue, categorize, Level 1 quick fixes, then if not fixed Level 2 and Level 3, then close ticket and notify user.">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4a5b9a"/></marker></defs>
+        <g class="ln"><path d="M180 52V72"/><path d="M180 122V142"/><path d="M180 192V212"/><path d="M180 322V362"/><path d="M180 412V442"/><path d="M180 492V532"/><path d="M250 272H338V557H312"/></g>
+        <g class="bx">
+          <rect class="b1" x="50" y="10" width="260" height="42" rx="9"/><rect class="b1" x="50" y="80" width="260" height="42" rx="9"/><rect class="b1" x="50" y="150" width="260" height="42" rx="9"/>
+          <polygon class="dc" points="180,212 250,272 180,322 110,272"/>
+          <rect class="b2" x="40" y="362" width="280" height="50" rx="9"/><rect class="b2" x="40" y="442" width="280" height="50" rx="9"/>
+          <rect class="b3" x="50" y="532" width="260" height="50" rx="9"/>
+        </g>
+        <g class="tx" text-anchor="middle">
+          <text x="180" y="36">Log Issue &amp; Create Ticket ID</text><text x="180" y="106">Check &amp; Categorize Issue</text><text x="180" y="176">Level 1: Quick Fixes</text>
+          <text class="dt" x="180" y="277">Fixed?</text>
+          <text class="wh" x="180" y="383">Level 2: Advanced Help</text><text class="sm wh" x="180" y="401">within 24 hours</text>
+          <text class="wh" x="180" y="463">Level 3: Expert Assistance</text><text class="sm wh" x="180" y="481">within 48 hours</text>
+          <text x="180" y="553">Close Ticket &amp; Notify User</text><text class="sm" x="180" y="571">Final test, status = Resolved</text>
+          <text class="yn" x="276" y="262">Yes</text><text class="yn" x="196" y="345" text-anchor="start">No</text>
+        </g>
+      </svg>
+      <figcaption>Ticket Handling SOP flowchart. If the issue is fixed at Level 1, the Yes line goes straight to closure.</figcaption>
+    </figure>
+  </div>
+  <p class="cite">Escalation to Level 2 within 24 hours if downtime exceeds 30 minutes (The Independent Institute of Education, 2026).</p>
+</section>
+
+<section class="block" id="emails">
+  <div class="sec-head">
+    <span class="tag">C · Email templates</span>
+    <h2>Three messages keep the user informed</h2>
+    <p class="lead">Acknowledgement, delay notification and resolution. Each is signed by Team Leader Thato Ndlovu.</p>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Email templates">
+    <button class="tab" role="tab" id="t0" aria-selected="true" aria-controls="p0">1. Acknowledgement</button>
+    <button class="tab" role="tab" id="t1" aria-selected="false" aria-controls="p1" tabindex="-1">2. Progress update</button>
+    <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1">3. Resolution</button>
+  </div>
+
+  <article class="mail" role="tabpanel" id="p0" aria-labelledby="t0">
+    <header><small>Ticket acknowledgement · auto-response</small><strong>Subject: Ticket Received – [NT-2026-00X]</strong></header>
+    <div class="body">
+      <p>Dear User,</p>
+      <p>Your request, "[Short Description]", has been successfully logged.</p>
+      <dl class="kv">
+        <dt>Ticket ID</dt><dd>NT-2026-00X</dd>
+        <dt>Priority</dt><dd class="badge-high">High</dd>
+        <dt>Assigned to</dt><dd>Team Leader</dd>
+      </dl>
+      <p>We'll respond within the SLA timeframe (Level 1 – 2 hours). You can track progress in SmartResolve.</p>
+      <p class="sig">Regards,<br>NovaTech Solutions | Help Desk<br>Team Leader Thato Ndlovu</p>
+    </div>
+  </article>
+
+  <article class="mail" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
+    <header><small>Progress update · delay notification</small><strong>Subject: Update – Ticket NT-2026-00X In Progress</strong></header>
+    <div class="body">
+      <p>Dear User,</p>
+      <p>Your ticket is still being processed.</p>
+      <dl class="kv">
+        <dt>Current status</dt><dd>Level 2 investigation for VLAN 20 (Warehouse)</dd>
+        <dt>Expected resolution</dt><dd>24 hours</dd>
+      </dl>
+      <p>We apologize for the delay and appreciate your patience. We'll keep you informed of further updates.</p>
+      <p class="sig">Kind regards,<br>NovaTech Solutions | Help Desk<br>Team Leader Thato Ndlovu</p>
+    </div>
+  </article>
+
+  <article class="mail" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
+    <header><small>Ticket resolution · confirmation</small><strong>Subject: Resolved – Ticket NT-2026-00X Closed</strong></header>
+    <div class="body">
+      <p>Dear User,</p>
+      <p>Your issue, "[Password Reset / Wi-Fi]", has been resolved.</p>
+      <dl class="kv">
+        <dt>Resolution time</dt><dd>45 minutes</dd>
+        <dt>Root cause</dt><dd>Active Directory lockout</dd>
+      </dl>
+      <p>Please confirm closure within 24 hours. Thank you for your cooperation.</p>
+      <p class="sig">Regards,<br>NovaTech Solutions | Help Desk<br>Team Leader Thato Ndlovu</p>
+    </div>
+  </article>
+  <p class="cite">Formatted per TEWC5111 professional communication standards (The Independent Institute of Education, 2026).</p>
+</section>
+
+<section class="block" id="change">
+  <div class="sec-head">
+    <span class="tag">D · Change request template</span>
+    <h2>Upgrading Wi-Fi routers or firewall software</h2>
+    <p class="lead">The Level 3 route for changes that can disrupt the network. Every change has a risk plan, four approvals and a way back.</p>
+  </div>
+  <div class="cr">
+    <div class="cr-row"><div>Description</div><div>Upgrade Wi-Fi routers in Building B, or install new firewall software (from v5.2 to v6.0).</div></div>
+    <div class="cr-row"><div>Impact</div><div><span class="badge-high">High</span> – potential disruption to network services.</div></div>
+    <div class="cr-row"><div>Risk &amp; mitigation</div><div>Risk of downtime. The mitigation plan includes a full backup and scheduling during a 02:00 maintenance window.</div></div>
+    <div class="cr-row"><div>Approval signatures</div><div class="sign">
+      <span><em>Requester</em></span><span><em>Team Leader</em></span><span><em>IT Manager</em></span><span><em>Finance Department</em></span>
+    </div></div>
+    <div class="cr-row"><div>Implementation window</div><div>20 January 2024, 02:00 – 03:00</div></div>
+    <div class="cr-row"><div>Rollback plan</div><div>Revert to firewall version v5.2 if issues occur.</div></div>
+  </div>
+  <p class="cite">The Change Request process follows ITIL Change Enablement (Axelos, 2019), with a firewall upgrade example from Cisco Systems (2022).</p>
+</section>
+
+<section class="block" id="innovation">
+  <div class="sec-head">
+    <span class="tag">E · Innovation clause</span>
+    <h2>PriorityPilot AI with SmartResolve</h2>
+  </div>
+  <div class="innov">
+    <h3>Let AI set the priority and route the ticket.</h3>
+    <p>PriorityPilot AI integrates with SmartResolve to prioritize 60–80 weekly tickets by urgency and impact, then route each one to the correct level. Level 1 spends less time on complex configurations. Logging is more accurate, accountability is clearer and end users get automated emails in the TEWC5111 format. This addresses NovaTech's inefficiency in communication and links to the SLA.</p>
+    <div class="rule-grid">
+      <div><b>60–80</b><span>tickets prioritized automatically each week</span></div>
+      <div><b>High</b><span>when 5 or more users are affected, or on a server outage</span></div>
+      <div><b>Auto</b><span>routing to the correct support level</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="references">
+  <div class="sec-head">
+    <span class="tag">References</span>
+    <h2>Sources</h2>
+  </div>
+  <div class="panel">
+    <ul class="refs">
+      <li>Axelos. 2019. <em>ITIL Foundation: ITIL 4 Edition</em>. London: TSO.</li>
+      <li>Cisco Systems. 2022. <em>Troubleshooting VLAN and Network Connectivity Issues</em>. Cisco Documentation. Available at: <a href="https://www.cisco.com/c/en/us/support/docs/lan-switching/virtual-lans-vlan-trunking-protocol-vlans-vtp/" target="_blank" rel="noopener">cisco.com/c/en/us/support/docs/lan-switching/…</a> [Accessed 02 September 2026]. [Online]</li>
+      <li>Microsoft. 2023. <em>Active Directory Account Lockout and Password Reset Procedures</em>. Microsoft Learn. Available at: <a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/windows-security/account-lockout" target="_blank" rel="noopener">learn.microsoft.com/en-us/troubleshoot/windows-server/…/account-lockout</a> [Accessed 02 September 2026]. [Online]</li>
+      <li>The Independent Institute of Education (The IIE). 2026. <em>XHIS5122/p Module Manual – IT Systems Management – Task 2: IT Support Blueprint Case Study: NovaTech Solutions (Pty) Ltd</em>. Pretoria: The IIE MSA Campus. Pp. 31–32.</li>
+      <li>The Independent Institute of Education (The IIE). 2026. <em>TEWC5111 and CONE5111 – Workplace Communication and Professional Writing Guidelines – Email Templates, Cover Page and Formatting Standards</em>. Pretoria: The IIE.</li>
+      <li>ManageEngine. 2023. <em>Best Practices for Help Desk Ticketing Systems and Escalation Matrix</em>. Available at: <a href="https://www.manageengine.com/products/service-desk/" target="_blank" rel="noopener">manageengine.com/products/service-desk/</a> [Accessed 02 September 2026]. [Online]</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Confidential. Prepared for academic use only.</p>
+    <p>Property of NovaTech Solutions (Pty) Ltd and The Independent Institute of Education. Not for distribution.</p>
+    <p>IIE · Academic Submission · September 2026 · Module XHIS5122/p, Group 1</p>
+    <p>Disclaimer: I did the assignment alone without my group members.</p>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
